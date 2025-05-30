@@ -35,8 +35,8 @@ class Repository
         return new DailyOrderReportData(
             dateEnToBr($date),
             $report->quantity,
-            formatFloatToReal($report->total),
-            formatFloatToReal($report->total_comission),
+            formatFloatToReal($report->total ?: 0),
+            formatFloatToReal($report->total_comission ?: 0),
         );
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('orders', OrderController::class);
 
+    Route::post('reports/send/orders/daily/sellers/{id}', [ReportsController::class, 'resendSellerDailyOrder']);
 });

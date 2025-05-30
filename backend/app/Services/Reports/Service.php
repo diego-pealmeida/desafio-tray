@@ -3,6 +3,8 @@
 namespace App\Services\Reports;
 
 use App\Data\DailyOrderReportData;
+use App\Data\ResendDailyOrderReportData;
+use App\Jobs\SendSellersDailyOrderEmails;
 use App\Repositories\Reports\Repository;
 
 class Service
@@ -37,5 +39,11 @@ class Service
         \Cache::put($cacheKey, $report);
 
         return $report;
+    }
+
+    public function resendSellerDailyOrderReport(int $seller_id, ResendDailyOrderReportData $data)
+    {
+        SendSellersDailyOrderEmails::dispatch($data->date, $seller_id)
+            ->onQueue('low');
     }
 }

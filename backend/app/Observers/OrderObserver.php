@@ -15,11 +15,11 @@ class OrderObserver
 
     public function updated(Order $order)
     {
-        $dateOriginal = $order->getOriginal('date');
-        $sellerOriginal = $order->getOriginal('seller_id');
+        $date_original = $order->getOriginal('date');
+        $seller_id_original = $order->getOriginal('seller_id');
 
-        if ($dateOriginal != $order->date || $sellerOriginal != $order->seller_id)
-            RefreshDailyOrderCache::dispatch($order->date, $order->seller_id)
+        if ($date_original != $order->date || $seller_id_original != $order->seller_id)
+            RefreshDailyOrderCache::dispatch($date_original, $seller_id_original)
                 ->onQueue('low')
                 ->delay(now()->addSeconds(10));
     }

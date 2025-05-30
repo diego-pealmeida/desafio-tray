@@ -15,7 +15,7 @@ class SendSellersDailyOrderEmails implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(private string $date, private ?int $sellerId = null) {
+    public function __construct(private string $date, private ?int $seller_id = null) {
         //
     }
 
@@ -24,8 +24,8 @@ class SendSellersDailyOrderEmails implements ShouldQueue
         SellerRepository $sellerRepository
     ): void
     {
-        if (!empty($this->sellerId)) {
-            $seller = $sellerRepository->find($this->sellerId);
+        if (!empty($this->seller_id)) {
+            $seller = $sellerRepository->find($this->seller_id);
 
             if (!empty($seller))
                 $this->sendSellerReport($seller, $reportService);

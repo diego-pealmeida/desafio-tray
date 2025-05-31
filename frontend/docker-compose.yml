@@ -9,7 +9,6 @@ services:
       - "3000:5173"
     volumes:
       - .:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - ./.env
     command: npm run dev -- --host

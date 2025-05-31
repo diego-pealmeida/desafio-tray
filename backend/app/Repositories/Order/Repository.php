@@ -89,15 +89,17 @@ class Repository
 
     public function refreshComission(int $orderId): void
     {
+        $percentage = (float) config('constants.settings.commission_percentage');
+
         $order = $this->find($orderId);
 
-        $comissionValue = round(($order->value * 0.085), 2);
+        $comissionValue = round(($order->value * ($percentage / 100)), 2);
 
         $saved = $order->comission()->updateOrCreate(
             ['order_id' => $order->id],
             [
                 'value' => $comissionValue,
-                'percentage' => 8.5
+                'percentage' => $percentage
             ]
         );
 

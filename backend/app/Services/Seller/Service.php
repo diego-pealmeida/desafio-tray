@@ -2,12 +2,13 @@
 
 namespace App\Services\Seller;
 
+use App\Data\ListData;
+use App\Data\ListResponseData;
 use App\Data\SellerData;
 use App\Exceptions\Seller\EmailAlreadyExistsException;
 use App\Exceptions\Seller\NotFoundException;
 use App\Models\Seller;
 use App\Repositories\Seller\Repository;
-use Illuminate\Database\Eloquent\Collection;
 
 class Service
 {
@@ -15,9 +16,9 @@ class Service
         //
     }
 
-    public function listSellers(): Collection
+    public function listSellers(ListData $data): ListResponseData
     {
-        return $this->repository->all();
+        return $this->repository->list($data);
     }
 
     public function getSeller(int $sellerId): Seller
@@ -53,13 +54,5 @@ class Service
             throw new NotFoundException("Seller not found");
 
         $this->repository->remove($sellerId);
-    }
-
-    public function restoreSeller(int $sellerId): void
-    {
-        if (!$this->repository->sellerExists($sellerId, true))
-            throw new NotFoundException("Seller not found");
-
-        $this->repository->restore($sellerId);
     }
 }

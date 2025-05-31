@@ -6,6 +6,7 @@ use App\Exceptions\Order\NotFoundException;
 use App\Http\Requests\Order\ListRequest;
 use App\Http\Requests\Order\StoreRequest;
 use App\Http\Requests\Order\UpdateRequest;
+use App\Http\Resources\Order\ListResource;
 use App\Services\Order\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -27,9 +28,9 @@ class OrderController extends Controller
 
     public function index(ListRequest $request)
     {
-        $orders = $this->service->listOrders($request->toData());
+        $list = $this->service->listOrders($request->toData());
 
-        return $this->successResponse($orders);
+        return $this->successResponse(new ListResource($list));
     }
 
     public function store(StoreRequest $request)

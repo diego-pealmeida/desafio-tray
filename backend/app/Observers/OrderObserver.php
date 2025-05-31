@@ -10,7 +10,7 @@ class OrderObserver
 {
     public function saved(Order $order)
     {
-        RefreshOrderComission::dispatch($order->id)->onQueue('high');
+        RefreshOrderComission::dispatchSync($order->id);
     }
 
     public function updated(Order $order)

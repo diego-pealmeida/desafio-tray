@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\Seller\EmailAlreadyExistsException;
 use App\Exceptions\Seller\NotFoundException;
+use App\Http\Requests\ListRequest;
 use App\Http\Requests\Seller\StoreRequest;
 use App\Http\Requests\Seller\UpdateRequest;
+use App\Http\Resources\Seller\ListResource;
 use App\Services\Seller\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -33,11 +35,11 @@ class SellerController extends Controller
         );
     }
 
-    public function index()
+    public function index(ListRequest $request)
     {
-        $sellers = $this->service->listSellers();
+        $list = $this->service->listSellers($request->toData());
 
-        return $this->successResponse($sellers);
+        return $this->successResponse(new ListResource($list));
     }
 
     public function store(StoreRequest $request)
@@ -93,20 +95,6 @@ class SellerController extends Controller
         } catch (\Throwable $e) {
             Log::error($e->getMessage());
             return $this->internalErrorResponse('remover o vendedor');
-        }
-
-        return $this->noContentResponse();
-    }
-
-    public function restore(int $id)
-    {
-        try {
-            $this->service->restoreSeller($id);
-        } catch (NotFoundException $e) {
-            return $this->sellerNotFoundResponse();
-        } catch (\Throwable $e) {
-            Log::error($e->getMessage());
-            return $this->internalErrorResponse('restaurar o vendedor');
         }
 
         return $this->noContentResponse();

@@ -2,11 +2,12 @@
 
 namespace App\Repositories\Seller;
 
+use App\Data\ListData;
+use App\Data\ListResponseData;
 use App\Data\SellerData;
 use App\Exceptions\Seller\CreateException;
 use App\Exceptions\Seller\UpdateException;
 use App\Exceptions\Seller\DeleteException;
-use App\Exceptions\Seller\RestoreException;
 use App\Models\Seller;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -33,6 +34,29 @@ class Repository
                 $cond->whereNot('id', $sellerId);
             })
             ->whereEmail(Str::lower($email))->exists();
+    }
+
+    public function list(ListData $data): ListResponseData
+    {
+        $total = $totalFiltered = $this->model->count();
+
+        $sellers = $this->model
+            ->when(!is_null($data->filter), function ($cond) use ($data) {
+                $cond->where(function ($cond) use ($data) {
+                    $filter = mb_strtolower($data->filter, 'UTF-8');
+                    $cond->orWhereRaw('LOWER(name) LIKE ?', "%{$filter}%");
+                    $cond->orWhereRaw('LOWER(email) LIKE ?', "%{$filter}%");
+                });
+            });
+
+        $totalFiltered = $sellers->count();
+
+        $sellers = $sellers
+            ->limit($data->limit)
+            ->offset(($data->offset * $data->limit))
+            ->get();
+
+        return new ListResponseData($sellers, $total, $totalFiltered);
     }
 
     public function all(): Collection
@@ -75,15 +99,5 @@ class Repository
 
         if (!$deleted)
             throw new DeleteException("An error ocurred when trying to remove the seller. ID: $sellerId");
-    }
-
-    public function restore(int $sellerId): void
-    {
-        $restored = $this->model
-            ->whereId($sellerId)
-            ->restore();
-
-        if (!$restored)
-            throw new RestoreException("An error ocurred when trying to restore the seller. ID: $sellerId");
     }
 }

@@ -23,7 +23,7 @@ class Service
     {
         $user = $this->userRepository->findByEmail($data->email);
 
-        if (!$user || Hash::check($data->password, $user->password))
+        if (!$user || !Hash::check($data->password, $user->password))
             throw new InvalidCredentialsException("email or password is invalid");
 
         $expiredAt = $data->remember_me ? null : now()->addHours(4);

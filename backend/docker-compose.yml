@@ -16,6 +16,19 @@ services:
             - mysql
             - redis
 
+    supervisor:
+        build:
+            context: .
+            dockerfile: docker/supervisor/Dockerfile
+        restart: unless-stopped
+        volumes:
+            - .:/var/www
+        depends_on:
+            - app
+            - redis
+        networks:
+            - laravel
+
     webserver:
         image: nginx:alpine
         ports:

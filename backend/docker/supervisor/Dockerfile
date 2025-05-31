@@ -1,4 +1,6 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
+
+USER root
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -11,18 +13,20 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     libzip-dev \
+    libpq-dev \
     libssl-dev \
+    cron supervisor \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN mkdir -p /var/www /var/log/supervisor
 
 WORKDIR /var/www
 
-COPY . .
+COPY . /var/www
 
 RUN chown -R www-data:www-data /var/www \
-    && chown -R www-data:www-data /var/www/storage \
-    && chmod -R 775 /var/www
+    && chmod +x /var/www/artisan
 
-EXPOSE 9000
-CMD ["php-fpm"]
+COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

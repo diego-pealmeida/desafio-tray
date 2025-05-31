@@ -23,9 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule) {
         $schedule
             ->job(new SendUsersDailyOrderEmails(now()->format('Y-m-d')))
-            ->dailyAt('21:00');
+            ->everyMinute();
 
         $schedule
             ->job(new SendSellersDailyOrderEmails(now()->format('Y-m-d')))
-            ->dailyAt('21:00');
+            ->everyMinute();
     })->create();

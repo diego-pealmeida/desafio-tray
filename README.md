@@ -8,13 +8,16 @@ Sigua as orientações abaixo para levantar o sistema corretamente!
 
 ### Backend
 
+**Só vi no final que pode acontecer se dar erro de permissão ao acessar o horizon do container, pelo prazo preferir não focar muito nisso, então peco que se acontecer apenas de um `chmod -R 777` na pasta do backend! Sei que não é a melhor coisa a se fazer, então me perdoe rsrsrs :')**
+
 - Acesse a pasta `desafio-tray/backend`
 - Faça uma cópia do arquivo `.env.example` para `.env`
 - Depois execute `docker compose up -d --build`
 - Em seguida execute o comando `docker compose exec app composer install` para instalar todas as dependência do projeto
 - Gere uma chave para a placação executando `docker compose exec app php artisan key:generate`
 - Execute as migration e seeders necessárias `docker compose exec app php artisan migrate --seed`
-- Pronto o sistema já está pronto para uso
+- Após tudo instalado e configurado aconcelho a executar o comando `docker compose restart` pois algum serviços podem não estar todando por terem sido executados sem todas as bibliotecas devidas
+- E assim sistema já está pronto para uso
 
 ### Serviços disponíveis no backend
 
@@ -43,8 +46,6 @@ docker compose exec app php artisan schedule:work
 ```
 
 _*Obs.: O sistema pode ser acessado com um usuário de teste:  email `teste@exemplo.com.br` senha `Mudar@123`*_
-
-**Só vi no final que pode acontecer se dar erro de permissão ao acessar o horizon do container, pelo prazo preferir não focar muito nisso, então peco que se acontecer apenas de um `chmod -R 777` na pasta do backend! Sei que não é a melhor coisa a se fazer, então me perdoe rsrsrs :')**
 
 ### Frontend
 

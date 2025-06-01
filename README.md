@@ -16,8 +16,8 @@ Sigua as orientações abaixo para levantar o sistema corretamente!
 - Em seguida execute o comando `docker compose exec app composer install` para instalar todas as dependência do projeto
 - Gere uma chave para a placação executando `docker compose exec app php artisan key:generate`
 - Execute as migration e seeders necessárias `docker compose exec app php artisan migrate --seed`
-- Após tudo instalado e configurado aconcelho a executar o comando `docker compose restart` pois algum serviços podem não estar todando por terem sido executados sem todas as bibliotecas devidas
-- E assim sistema já está pronto para uso
+- Após tudo instalado e configurado aconselho a executar o comando `docker compose restart` pois algum serviços podem não estar rodando por terem sido executados sem todas as bibliotecas devidas
+- E assim o sistema já está pronto para uso
 
 ### Serviços disponíveis no backend
 
@@ -31,7 +31,7 @@ Acessando a url `http://localhost:5540` você terá acesso ao painel administrat
 
 #### Mailpit
 
-Há um servidor SMTP fake para teste de envio de emails, sem a necessidade de conectar a um SMTP real, para acessálo bata acessar a url `http://localhost:8025`
+Há um servidor SMTP fake para teste de envio de emails, sem a necessidade de conectar a um SMTP real, para acessá-lo bata acessar a url `http://localhost:8025`
 
 #### Supervisor
 
@@ -49,5 +49,6 @@ _*Obs.: O sistema pode ser acessado com um usuário de teste:  email `teste@exem
 
 ### Frontend
 
-- Após clonar o repositório basta acessar a pasta `desafio-tray/frontend` e executar o comando `docker compose up -d --build`
-- Como isso todas as dependencias devem ser instaladas e será possível acesso o sistema pela url `http://localhost:3000`
+- Após clonar o repositório é necessário instalar todas as dependencias acessando a pasta `desafio-tray/frontend` e executando o comando `npm install`
+- Depois basta executar o comando `docker compose up -d --build`
+- Como isso será possível acessar o sistema pela url `http://localhost:3000`
